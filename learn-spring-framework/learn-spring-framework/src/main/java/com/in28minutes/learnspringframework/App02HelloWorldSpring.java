@@ -2,6 +2,7 @@ package com.in28minutes.learnspringframework;
 
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import java.util.Arrays;
 
 public class App02HelloWorldSpring {
     public static void main(String[] args) {
@@ -25,11 +26,16 @@ public class App02HelloWorldSpring {
 
         System.out.println(context.getBean("person2ByMethodCall"));
 
+        System.out.println(context.getBean("person4ByQualifier"));
+
         // Retrieve by Bean type
-        // Note - Error - If multiple Beans of same type
-//        System.out.println(context.getBean(Address.class));
+        // Note - Error - If multiple Beans of same type | Use @Primary to define priority
+        System.out.println(context.getBean(Person.class));
 
 
+        // Retrieving Bean Details
+        Arrays.stream(context.getBeanDefinitionNames()).forEach(System.out::println);
+        System.out.println(context.getBeanDefinitionCount());
 
     }
 }
