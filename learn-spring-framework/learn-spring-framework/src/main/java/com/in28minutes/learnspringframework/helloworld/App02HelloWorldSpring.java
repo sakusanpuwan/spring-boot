@@ -1,4 +1,4 @@
-package com.in28minutes.learnspringframework;
+package com.in28minutes.learnspringframework.helloworld;
 
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -10,6 +10,7 @@ public class App02HelloWorldSpring {
         // JVM -> Spring -> name|age|person|address
 
         // 1. Launch a Spring Context
+
         var context = new AnnotationConfigApplicationContext(HelloWorldConfiguration.class);
 
         // 2. Configure what Spring manages
