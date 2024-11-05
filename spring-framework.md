@@ -71,7 +71,7 @@ The Spring Container (also known as the IoC container) is responsible for managi
         - **Eager initialization**: Beans are created when the context is created.
         - Internationalization, event propagation, and integration with AOP (Aspect-Oriented Programming).
     - **Use case**: Enterprise applications, web apps, REST APIs, and microservices.
-
+---
 ## Dependency Injection (DI)
 
 - **Definition**: DI is a design pattern that allows a class to receive its dependencies from an external source rather than creating them internally.

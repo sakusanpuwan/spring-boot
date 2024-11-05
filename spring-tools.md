@@ -1,18 +1,22 @@
 ## Profiles
 ```properties
-//application.properties
+// application.properties
 
 spring.profiles.active=dev
 ```
 
 ```properties
-//application-dev.properties
+// application-dev.properties
 
-dev configs
+username=dev-username
+password=dev-password
 ```
 
 ```properties
-//application-sit.properties
+// application-sit.properties
 
-sit configs
+username=sit-username
+password=sit-password
 ```
+
+---
