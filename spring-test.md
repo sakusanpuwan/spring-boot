@@ -37,6 +37,13 @@ public class UserService {
 ## Spring Boot Test
 ``@SpringBootTest`` - Boots the entire Spring Application context for integration tests.  
 
+This is used for integration tests where you need the entire Spring application context to be loaded. It’s best suited for testing how different parts of the application work together.
+
+When to use:  
+- Testing application-level components: For example, verifying that your controllers, services, and repositories interact as expected.
+- Verifying configurations: If you need to ensure that specific beans are configured and wired correctly.
+- End-to-end tests: When you want to mimic a production-like setup.  
+
 ``@MockBean`` is used in Spring Boot tests to replace a real bean in the application context with a mock. This is useful for isolating a component and mocking its dependencies.  
 
 ```java
@@ -63,6 +70,13 @@ public class UserServiceIntegrationTest {
 ```
 
 ## Mock Test
+This is used for unit tests where you want to isolate the class under test by mocking its dependencies. It’s a lightweight alternative to loading the Spring context.
+
+When to use:
+- Isolated testing: If you’re testing a single class or method without involving the full application context.
+- Mocking dependencies: When you want to mock components like services, repositories, or external APIs to control their behavior in tests.
+- Fast feedback: Useful for rapid test execution since no application context is loaded.
+
 ```java
 @ExtendWith(MockitoExtension.class)  // Automatically initializes mocks
 public class UserServiceTest {
@@ -89,7 +103,8 @@ public class UserServiceTest {
 ```
 
 ## Partial Mock Test
-With ``@Spy``, we can create a partial mock where some methods are real and some methods are mocked. This is useful when you want to mock only a part of a class while keeping its original behavior for other methods.  
+With ``@Spy``, we can create a partial mock where some methods are real and some methods are mocked. This is useful when you want to mock only a part of a class while keeping its original behavior for other methods.
+
 ```java
 @ExtendWith(MockitoExtension.class)
 public class UserServiceSpyTest {
@@ -117,9 +132,17 @@ public class UserServiceSpyTest {
 }
 ```
 
-### Summary of Annotations
+### Summary
 - ``@Mock``: Creates simple mocks.  
 - ``@InjectMocks``: Automatically injects mocks into the class under test.
 - ```@MockBean```: Replaces a bean in the Spring context with a mock, typically in integration tests.
 - ```@SpringBootTest```: Loads the entire application context for integration testing.
 - ```@ExtendWith(MockitoExtension.class)```: Activates Mockito in JUnit 5 tests.
+
+| **Scenario**                                 | **Use `@SpringBootTest`** | **Use `@ExtendWith(MockitoExtension.class)`** |
+|----------------------------------------------|---------------------------|-----------------------------------------------|
+| Testing a single class in isolation          | ❌                         | ✅                                             |
+| Testing multiple components together         | ✅                         | ❌                                             |
+| Verifying integration with external services | ✅                         | ❌                                             |
+| Quick test execution                         | ❌                         | ✅                                             |
+| Full application context required            | ✅                         | ❌                                             |
