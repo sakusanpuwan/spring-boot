@@ -16,6 +16,8 @@ Spring MVC (Model-View-Controller) is a part of the Spring Framework used for bu
 - Handles incoming HTTP requests, processes them (e.g., calls services), and returns a model and view name.
 - Example: Maps a URL like /user to a method that retrieves user data and returns it to a view.
 
+![image](https://github.com/user-attachments/assets/bd656e8f-0b1a-40bd-a3e0-aa4849ac9163)
+
 ### 1. Receiving HTTP request
 When user sends an HTTP request (accessing a URL in browser), the web server forwards this request to the DispatcherServlet.  
 
@@ -79,6 +81,8 @@ The generated view (HTML, JSON, etc.) is converted into an HTTP response.
 This response is sent back to the client (browser or any HTTP client).
 
 ## URL breakdown
+![image](https://github.com/user-attachments/assets/8e17e718-e24d-4de4-9a91-e8246b6e4937)
+
 **Scheme** - the protocol(method for exchanging or transferring data around a computer network) the browser must use to request the resource. Usually for websites the protocol is HTTPS or HTTP (its unsecured version).  
 
 **Domain** - indicates which Web server is being requested. Usually this is a domain name, but an IP address may also be used.  
