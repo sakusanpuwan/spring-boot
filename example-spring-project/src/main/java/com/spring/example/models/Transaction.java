@@ -32,6 +32,9 @@ public class Transaction {
     @Column(name = "STATUS")
     private String status;
 
+    @Column(name = "TRANSACTION_DATE")
+    private LocalDateTime transactionDate;
+
     public Long getId() {
         return id;
     }
@@ -79,7 +82,4 @@ public class Transaction {
     public void setTransactionDate(LocalDateTime transactionDate) {
         this.transactionDate = transactionDate;
     }
-
-    @Column(name = "TRANSACTION_DATE")
-    private LocalDateTime transactionDate;
 }
