@@ -68,7 +68,7 @@ Represents a transaction performed on the inventory.
 
 ---
 
-### 2. Load new supplier and product details
+### 2. Update quantity & Load new supplier and product details
 The application will read XML files for bulk product quantity updates, text files with new supplier and product details.
 Example input bulk product quantity update XML file:
 
@@ -86,14 +86,19 @@ Example input bulk product quantity update XML file:
   </product>
 </products>
 ```
+
+Add as new transaction with type ADD_STOCK
+
 Example input new supplier text file:
 ```text
+<NAME>,<EMAIL>,<PHONE>
 Global Supplies Inc,email@gmail.com,000-000-0000
 Supplies Ltd,email@gmail.com,000-000-0000
 ```
 
 Example input new product text file:
 ```text
+<NAME>,<DESC>,<QUANTITY>,<SUPPLIER>
 Widget A,High-quality widget,150,Global Supplies Inc
 Widget B,Economical widget,200, Supplies Ltd
 ```
@@ -116,6 +121,10 @@ Example Output XML File:
   </transaction>
 </transactionSummary>
 ```
+
+### 4. End of run activities
+Once all valid transactions have been loaded, update bulk quantity xml.  
+Publish text file with all suppliers and products in database with date stamp.
 
 ### 5. Exception Handling
 The application will implement custom exceptions to handle various errors and provide meaningful messages:
