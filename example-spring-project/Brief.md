@@ -68,24 +68,9 @@ Represents a transaction performed on the inventory.
 
 ---
 
-### 2. **API Integration**
-The application will fetch supplier details from an external API endpoint (`/api/supplierData`) in **JSON** format. The response will be parsed and mapped to update the database if the supplier does not exist.
-
-#### Example API Response:
-```json
-{
-  "supplierId": 101,
-  "supplierName": "Global Supplies Inc.",
-  "contact": "contact@globalsupplies.com"
-}
-```
-### 3. XML File Handling
-The application will read and write XML files for bulk product updates and transaction summaries.
-
-Read: Parse an XML file containing bulk product updates.
-Write: After processing transactions, generate an XML file summarizing the transactions.  
-
-Example Input XML File:
+### 2. Load new supplier and product details
+The application will read XML files for bulk product quantity updates, text files with new supplier and product details.
+Example input bulk product quantity update XML file:
 
 ```xml
 <products>
@@ -101,6 +86,22 @@ Example Input XML File:
   </product>
 </products>
 ```
+Example input new supplier text file:
+```text
+Global Supplies Inc,email@gmail.com,000-000-0000
+Supplies Ltd,email@gmail.com,000-000-0000
+```
+
+Example input new product text file:
+```text
+Widget A,High-quality widget,150,Global Supplies Inc
+Widget B,Economical widget,200, Supplies Ltd
+```
+
+### 3. Process transactions 
+Load transactions with status READY/FAILED and validate if quantity can be processed before updating status.  
+
+Once transaction is processed, create xml file with transaction details. 
 
 Example Output XML File:
 ```xml
@@ -114,24 +115,6 @@ Example Output XML File:
     <status>Insufficient Stock</status>
   </transaction>
 </transactionSummary>
-```
-
-### 4. Text File Handling
-The application will handle text files containing product descriptions and export product data to a text file.
-
-Read: Load a text file containing product descriptions and store them in the database.
-Write: Export a summary of all products to a text file.  
-
-Example Input Text File:
-```text
-1,Widget A,High-quality widget
-2,Widget B,Economical widget
-```
-
-Example Output Text File:
-```text
-Product ID: 1, Name: Widget A, Description: High-quality widget
-Product ID: 2, Name: Widget B, Description: Economical widget
 ```
 
 ### 5. Exception Handling
@@ -154,31 +137,3 @@ Mocking:
 
 Frameworks: Use JUnit 5 and Mockito for unit testing and mocking.
 
-## Code Flow
-
-### API Endpoint for Transactions
-- **POST** `/api/processTransactions`: Reads an XML file, validates data, and processes transactions.
-
-### Database Logic
-- Fetch product details using **Spring Data JPA**.
-- Validate cross-entity relationships (e.g., product and supplier).
-- Update database records based on input and business logic.
-
-### File Handling
-- **Read XML**: Use **JAXB** or **Jackson** to parse the XML file and map it to objects.
-- **Write XML**: Serialize transaction summaries to XML format.
-- **Read Text**: Use Java’s file handling utilities to process line-by-line input.
-- **Write Text**: Use **BufferedWriter** to create an output summary file.
-
-### API Integration
-- Use **Spring’s RestTemplate** or **WebClient** to fetch supplier details from an external API.
-- Parse the API response and update the database if the supplier is not already present.
-
-### Custom Exceptions and Validation
-- Validate incoming data (e.g., file content, API response, database relationships).
-- Throw and handle custom exceptions as needed.
-
-### Testing
-- Use **H2** for integration tests involving the database.
-- Mock file operations to test XML and text file handling without relying on actual files.
-- Mock API calls and validate response handling.
