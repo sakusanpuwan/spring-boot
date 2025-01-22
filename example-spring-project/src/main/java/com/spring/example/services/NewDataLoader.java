@@ -10,16 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.*;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import static com.spring.example.config.Constants.IN_STOCK;
 
 @Service
-public class SupplierProductDataLoader {
+public class NewDataLoader {
 
     @Value("${new.supplier.data.path}")
     private Resource supplierDataPath;
@@ -27,14 +32,17 @@ public class SupplierProductDataLoader {
     @Value("${new.product.data.path}")
     private Resource productDataPath;
 
+    @Value("${update.product.data.path}")
+    private Resource productQuantityPath;
+
     private SupplierRepository supplierRepository;
 
     private ProductRepository productRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(SupplierProductDataLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(NewDataLoader.class);
 
     @Autowired
-    public SupplierProductDataLoader(SupplierRepository supplierRepository, ProductRepository productRepository){
+    public NewDataLoader(SupplierRepository supplierRepository, ProductRepository productRepository){
         this.supplierRepository = supplierRepository;
         this.productRepository = productRepository;
     }
@@ -46,6 +54,9 @@ public class SupplierProductDataLoader {
 
         if (isValidFile(supplierDataPath)){
             loadProductData();
+        }
+        if (isValidFile(productQuantityPath)){
+            updateProductQuantity();
         }
     }
 
@@ -109,11 +120,14 @@ public class SupplierProductDataLoader {
                     if (entry.length > 4) {
                         throw new IllegalArgumentException("More than 4 fields provided in product file at line: " + productIndex);
                     }
-                    if (!productRepository.findByName(entry[0].trim()).isEmpty()) {
+                    if (productRepository.findByName(entry[0].trim()).isPresent()) {
                         throw new IllegalArgumentException("Product is already in database: " + entry[0]);
                     }
+                    if (supplierRepository.findByName(entry[3].trim()).isEmpty()) {
+                        throw new IllegalArgumentException("Supplier is not in database: " + entry[3]);
+                    }
 
-                    Supplier productSupplier = supplierRepository.findByName(entry[3].trim()).getFirst();
+                    Supplier productSupplier = supplierRepository.findByName(entry[3].trim()).get();
 
                     Product newProduct = new Product();
                     newProduct.setName(entry[0].trim());
@@ -139,4 +153,48 @@ public class SupplierProductDataLoader {
             logger.error("Error",e);
         }
     }
+
+    private void updateProductQuantity() {
+        try (InputStream inputStream = productQuantityPath.getInputStream()) {
+
+            if (inputStream == null) {
+                throw new RuntimeException("Error reading quantity update xml file at: " + productQuantityPath);
+            }
+            // Load and parse the XML file
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(inputStream);
+
+            // Normalize the XML structure
+            document.getDocumentElement().normalize();
+
+            // Get root element <products>
+            String rootElement = document.getDocumentElement().getNodeName();
+
+            // Get elements by tag name
+            NodeList productNodeList = document.getElementsByTagName("product");
+
+            // Iterate through nodes <product>
+            for (int i = 0; i < productNodeList.getLength(); i++) {
+                Element element = (Element) productNodeList.item(i);
+                String name = element.getElementsByTagName("name").item(0).getTextContent();
+                int quantity = Integer.parseInt(element.getElementsByTagName("quantity").item(0).getTextContent());
+                Product product = productRepository.findByName(name).orElse(null);
+                if (product != null){
+                    product.setQuantity(quantity);
+                    product.setLastUpdatedDate(LocalDateTime.now());
+                    productRepository.save(product);
+                    logger.info("Product {} has been saved in database",name);
+                } else {
+                    logger.error("Product {} is not found in database",name);
+                }
+            }
+        } catch (RuntimeException e){
+            logger.error(e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error processing quantity update XML file at {}",productQuantityPath);
+        }
+
+    }
 }
+

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
     <product>
-        <id>1</id>
         <name>Widget A</name>
         <quantity>50</quantity>
     </product>
     <product>
-        <id>2</id>
         <name>Widget B</name>
         <quantity>20</quantity>
     </product>

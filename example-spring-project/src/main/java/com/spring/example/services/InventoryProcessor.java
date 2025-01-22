@@ -11,11 +11,11 @@ public class InventoryProcessor implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(InventoryProcessor.class);
 
-    private final SupplierProductDataLoader supplierProductDataLoader;
+    private final NewDataLoader newDataLoader;
 
     @Autowired
-    public InventoryProcessor(SupplierProductDataLoader supplierProductDataLoader){
-        this.supplierProductDataLoader = supplierProductDataLoader;
+    public InventoryProcessor(NewDataLoader newDataLoader){
+        this.newDataLoader = newDataLoader;
     }
 
     @Override
@@ -29,6 +29,6 @@ public class InventoryProcessor implements CommandLineRunner {
             if fileName = supplier -> load supplier
          */
 
-        supplierProductDataLoader.loadData();
+        newDataLoader.loadData();
     }
 }
