@@ -70,6 +70,12 @@
 			<artifactId>jakarta.validation-api</artifactId>
 			<version>3.0.0</version> <!-- Adjust based on your project -->
 		</dependency>
+		<dependency>
+			<groupId>uk.org.lidalia</groupId>
+			<artifactId>slf4j-test</artifactId>
+			<version>1.2.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

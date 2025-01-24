@@ -24,8 +24,11 @@ public class InventoryProcessor implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         logger.info("Application has started");
-        newDataLoader.loadData();
+        newDataLoader.loadSupplierData();
+        newDataLoader.loadProductData();
+        newDataLoader.updateProductQuantity();
         transactionProcessor.processActiveTransactions();
+
     }
 
 }

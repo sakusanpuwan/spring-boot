@@ -47,18 +47,6 @@ public class NewDataLoader {
         this.productRepository = productRepository;
     }
 
-    public void loadData() {
-        if (isValidFile(supplierDataPath)) {
-            loadSupplierData();
-        }
-        if (isValidFile(supplierDataPath)){
-            loadProductData();
-        }
-        if (isValidFile(productQuantityPath)){
-            updateProductQuantity();
-        }
-    }
-
     private boolean isValidFile(Resource filePath) {
         if (filePath == null) {
             logger.error("Filepath not provided");
@@ -73,7 +61,10 @@ public class NewDataLoader {
         }
     }
 
-    private void loadSupplierData() {
+    public void loadSupplierData() {
+        if (!isValidFile(supplierDataPath)) {
+            return;
+        }
         try (BufferedReader supplierReader = new BufferedReader(new InputStreamReader(supplierDataPath.getInputStream()))){
             String line;
             int supplierIndex = 0;
@@ -108,7 +99,10 @@ public class NewDataLoader {
         }
     }
 
-    private void loadProductData() {
+    public void loadProductData() {
+        if (!isValidFile(productDataPath)) {
+            return;
+        }
         try (BufferedReader productReader = new BufferedReader(new InputStreamReader(productDataPath.getInputStream()))){
             String line;
             int productIndex = 0;
@@ -151,7 +145,10 @@ public class NewDataLoader {
         }
     }
 
-    private void updateProductQuantity() {
+    public void updateProductQuantity() {
+        if (!isValidFile(productQuantityPath)) {
+            return;
+        }
         try (InputStream inputStream = productQuantityPath.getInputStream()) {
 
             if (inputStream == null) {
