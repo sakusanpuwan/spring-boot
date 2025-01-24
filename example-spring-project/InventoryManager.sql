@@ -38,6 +38,8 @@ INSERT INTO Supplier (name, email, phone) VALUES ('Global Supplies Inc.', 'conta
 INSERT INTO Product (name, description, quantity, status, supplier_id) VALUES ('Widget A', 'High-quality widget', 100, 'In Stock', 1);
 INSERT INTO Transaction (product_id, transaction_type, quantity, status) VALUES (1, 'ADD_STOCK', 50, 'Completed');
 
+INSERT INTO Transaction (product_id, transaction_type, quantity, status) VALUES (21, 'ADD_STOCK', 100, 'Ready');
+
 SELECT * FROM SUPPLIER;
 SELECT * FROM PRODUCT;
-SELECT * FROM TRANSACTION;
+SELECT * FROM TRANSACTION WHERE STATUS = 'Completed' OR STATUS = 'Ready';

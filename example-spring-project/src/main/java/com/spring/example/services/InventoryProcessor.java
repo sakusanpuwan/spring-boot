@@ -13,22 +13,19 @@ public class InventoryProcessor implements CommandLineRunner {
 
     private final NewDataLoader newDataLoader;
 
+    private final TransactionProcessor transactionProcessor;
+
     @Autowired
-    public InventoryProcessor(NewDataLoader newDataLoader){
+    public InventoryProcessor(NewDataLoader newDataLoader, TransactionProcessor transactionProcessor){
         this.newDataLoader = newDataLoader;
+        this.transactionProcessor = transactionProcessor;
     }
 
     @Override
     public void run(String... args) throws Exception {
         logger.info("Application has started");
-        /*
-        Load new supplier and product details
-            newDataLoader
-            loadDate(filePath)
-            if fileName = product -> load product
-            if fileName = supplier -> load supplier
-         */
-
         newDataLoader.loadData();
+        transactionProcessor.processActiveTransactions();
     }
+
 }

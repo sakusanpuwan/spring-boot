@@ -51,7 +51,6 @@ public class NewDataLoader {
         if (isValidFile(supplierDataPath)) {
             loadSupplierData();
         }
-
         if (isValidFile(supplierDataPath)){
             loadProductData();
         }
@@ -85,7 +84,7 @@ public class NewDataLoader {
                     if (entry.length > 3) {
                         throw new IllegalArgumentException("More than 3 fields provided in supplier file at line: " + supplierIndex);
                     }
-                    if (!supplierRepository.findByName(entry[0].trim()).isEmpty()) {
+                    if (supplierRepository.findByName(entry[0].trim()).isPresent()) {
                         throw new IllegalArgumentException("Supplier is already in database: " + entry[0]);
                     }
                     Supplier newSupplier = new Supplier();
@@ -123,11 +122,9 @@ public class NewDataLoader {
                     if (productRepository.findByName(entry[0].trim()).isPresent()) {
                         throw new IllegalArgumentException("Product is already in database: " + entry[0]);
                     }
-                    if (supplierRepository.findByName(entry[3].trim()).isEmpty()) {
-                        throw new IllegalArgumentException("Supplier is not in database: " + entry[3]);
-                    }
 
-                    Supplier productSupplier = supplierRepository.findByName(entry[3].trim()).get();
+                    Supplier productSupplier = supplierRepository.findByName(entry[3].trim())
+                            .orElseThrow(() -> new IllegalArgumentException("Supplier is not in database: " + entry[3]));
 
                     Product newProduct = new Product();
                     newProduct.setName(entry[0].trim());
@@ -179,17 +176,15 @@ public class NewDataLoader {
                 Element element = (Element) productNodeList.item(i);
                 String name = element.getElementsByTagName("name").item(0).getTextContent();
                 int quantity = Integer.parseInt(element.getElementsByTagName("quantity").item(0).getTextContent());
-                Product product = productRepository.findByName(name).orElse(null);
-                if (product != null){
-                    product.setQuantity(quantity);
-                    product.setLastUpdatedDate(LocalDateTime.now());
-                    productRepository.save(product);
-                    logger.info("Product {} has been saved in database",name);
-                } else {
-                    logger.error("Product {} is not found in database",name);
-                }
+                Product product = productRepository.findByName(name)
+                        .orElseThrow(() -> new IllegalArgumentException("Product " +  name + " is not found in database"));
+
+                product.setQuantity(quantity);
+                product.setLastUpdatedDate(LocalDateTime.now());
+                productRepository.save(product);
+                logger.info("Product {} has been updated in database",name);
             }
-        } catch (RuntimeException e){
+        } catch (IllegalArgumentException e){
             logger.error(e.getMessage());
         } catch (Exception e) {
             logger.error("Error processing quantity update XML file at {}",productQuantityPath);
