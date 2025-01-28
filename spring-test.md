@@ -146,3 +146,6 @@ public class UserServiceSpyTest {
 | Verifying integration with external services | ✅                         | ❌                                             |
 | Quick test execution                         | ❌                         | ✅                                             |
 | Full application context required            | ✅                         | ❌                                             |
+
+## Naming Convention
+X_DoesY_WhenZ, where X is the name of the method, Y is the expected output, and Z is the name of an event within the logic
