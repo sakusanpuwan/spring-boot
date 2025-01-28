@@ -1,0 +1,2 @@
+Bolt A,High-quality bolt,150,Global Supplies Inc.
+Bolt B,Economical bolt,200, Supplies Ltd.

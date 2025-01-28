@@ -52,13 +52,16 @@ public class NewDataLoader {
             logger.error("Filepath not provided");
             return false;
         }
-
-        try {
-            return filePath.exists() && filePath.isReadable();
-        } catch (Exception e) {
+        if (!filePath.exists()){
+            logger.error("File not found at path {}",filePath);
+            return false;
+        }
+        if (!filePath.isReadable()){
             logger.error("Unable to access file at path {}",filePath);
             return false;
         }
+
+        return true;
     }
 
     public void loadSupplierData() {
@@ -151,9 +154,6 @@ public class NewDataLoader {
         }
         try (InputStream inputStream = productQuantityPath.getInputStream()) {
 
-            if (inputStream == null) {
-                throw new RuntimeException("Error reading quantity update xml file at: " + productQuantityPath);
-            }
             // Load and parse the XML file
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();

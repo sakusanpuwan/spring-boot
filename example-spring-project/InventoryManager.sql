@@ -39,7 +39,10 @@ INSERT INTO Product (name, description, quantity, status, supplier_id) VALUES ('
 INSERT INTO Transaction (product_id, transaction_type, quantity, status) VALUES (1, 'ADD_STOCK', 50, 'Completed');
 
 INSERT INTO Transaction (product_id, transaction_type, quantity, status) VALUES (21, 'ADD_STOCK', 100, 'Ready');
+INSERT INTO Transaction (product_id, transaction_type, quantity, status) VALUES (21, 'REMOVE_STOCK', 101, 'Ready');
+INSERT INTO Transaction (product_id, transaction_type, quantity, status) VALUES (21, 'REMOVE_STOCK', 300, 'Ready');
+
 
 SELECT * FROM SUPPLIER;
 SELECT * FROM PRODUCT;
-SELECT * FROM TRANSACTION WHERE STATUS = 'Completed' OR STATUS = 'Ready';
+SELECT * FROM TRANSACTION WHERE STATUS = 'Insufficient' OR STATUS = 'Ready';
