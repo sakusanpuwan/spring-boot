@@ -18,10 +18,9 @@ import static com.spring.example.config.Constants.ADD_STOCK;
 @Component
 public class TransactionProcessor {
 
+    private static final Logger logger = LoggerFactory.getLogger(TransactionProcessor.class);
     private final TransactionRepository transactionRepository;
     private final ProductRepository productRepository;
-
-    private static final Logger logger = LoggerFactory.getLogger(TransactionProcessor.class);
 
     @Autowired
     public TransactionProcessor(TransactionRepository transactionRepository, ProductRepository productRepository) {
@@ -31,36 +30,38 @@ public class TransactionProcessor {
 
     public void processActiveTransactions() {
         try {
-        List<Transaction> transactions = transactionRepository.findActiveTransactions();
-        if (transactions.isEmpty()) {
-            logger.info("No transactions to process");
-            return;
-        }
-
-        for (Transaction transaction : transactions) {
-            try {
-                Product product = Optional.ofNullable(transaction.getProduct())
-                        .orElseThrow(() -> new IllegalArgumentException("Product listed in transaction is not present in database"));
-                int signMultiplier = transaction.getTransactionType().equals(ADD_STOCK) ? 1 : -1;
-                int newQuantity = product.getQuantity() + (signMultiplier * transaction.getQuantity());
-                if (newQuantity < 0) {
-                    transaction.setStatus("Insufficient");
-                    logger.info("Insufficient quantity of product {} to perform transaction {}",product.getName(),transaction.getId());
-                } else {
-                    product.setQuantity(newQuantity);
-                    product.setLastUpdatedDate(LocalDateTime.now());
-                    productRepository.save(product);
-                    transaction.setStatus("Completed");
-                    logger.info("Transaction {} performed successfully",transaction.getId());
-                }
-                transaction.setTransactionDate(LocalDateTime.now());
-                transactionRepository.save(transaction);
-            } catch (Exception e){
-                logger.error("Error whilst processing transaction {} : {}",transaction.getId(),e.getMessage());
+            List<Transaction> transactions = transactionRepository.findActiveTransactions();
+            if (transactions.isEmpty()) {
+                logger.info("No transactions to process");
+                return;
             }
-        }
-    } catch (Exception e) {
-            logger.error("Error whilst processing transactions: {}",e.getMessage());
+
+            for (Transaction transaction : transactions) {
+                try {
+                    Product product = Optional.ofNullable(transaction.getProduct())
+                            .orElseThrow(() -> new IllegalArgumentException("Product listed in transaction is not present in database"));
+                    int signMultiplier = transaction.getTransactionType().equals(ADD_STOCK) ? 1 : -1;
+                    int newQuantity = product.getQuantity() + (signMultiplier * transaction.getQuantity());
+                    if (newQuantity < 0) {
+                        transaction.setStatus("Insufficient");
+                        logger.info("Insufficient quantity of product {} to perform transaction {}", product.getName(), transaction.getId());
+                    } else {
+                        product.setQuantity(newQuantity);
+                        product.setLastUpdatedDate(LocalDateTime.now());
+                        productRepository.save(product);
+                        transaction.setStatus("Completed");
+                        logger.info("Transaction {} performed successfully", transaction.getId());
+                    }
+                } catch (Exception e) {
+                    transaction.setStatus("Failed");
+                    logger.error("Error whilst processing transaction {} : {}", transaction.getId(), e.getMessage());
+                } finally {
+                    transaction.setTransactionDate(LocalDateTime.now());
+                    transactionRepository.save(transaction);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error whilst processing transactions: {}", e.getMessage());
         }
     }
 }
