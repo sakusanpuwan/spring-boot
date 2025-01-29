@@ -16,7 +16,7 @@ public class InventoryProcessor implements CommandLineRunner {
     private final TransactionProcessor transactionProcessor;
 
     @Autowired
-    public InventoryProcessor(NewDataLoader newDataLoader, TransactionProcessor transactionProcessor){
+    public InventoryProcessor(NewDataLoader newDataLoader, TransactionProcessor transactionProcessor) {
         this.newDataLoader = newDataLoader;
         this.transactionProcessor = transactionProcessor;
     }

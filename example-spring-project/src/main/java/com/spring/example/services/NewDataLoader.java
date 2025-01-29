@@ -16,33 +16,29 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 import static com.spring.example.config.Constants.IN_STOCK;
 
 @Service
 public class NewDataLoader {
 
+    private static final Logger logger = LoggerFactory.getLogger(NewDataLoader.class);
     @Value("${new.supplier.data.path}")
     private Resource supplierDataPath;
-
     @Value("${new.product.data.path}")
     private Resource productDataPath;
-
     @Value("${update.product.data.path}")
     private Resource productQuantityPath;
-
-    private SupplierRepository supplierRepository;
-
-    private ProductRepository productRepository;
-
-    private static final Logger logger = LoggerFactory.getLogger(NewDataLoader.class);
+    private final SupplierRepository supplierRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public NewDataLoader(SupplierRepository supplierRepository, ProductRepository productRepository){
+    public NewDataLoader(SupplierRepository supplierRepository, ProductRepository productRepository) {
         this.supplierRepository = supplierRepository;
         this.productRepository = productRepository;
     }
@@ -52,12 +48,12 @@ public class NewDataLoader {
             logger.error("Filepath not provided");
             return false;
         }
-        if (!filePath.exists()){
-            logger.error("File not found at path {}",filePath);
+        if (!filePath.exists()) {
+            logger.error("File not found at path {}", filePath);
             return false;
         }
-        if (!filePath.isReadable()){
-            logger.error("Unable to access file at path {}",filePath);
+        if (!filePath.isReadable()) {
+            logger.error("Unable to access file at path {}", filePath);
             return false;
         }
 
@@ -68,7 +64,7 @@ public class NewDataLoader {
         if (!isValidFile(supplierDataPath)) {
             return;
         }
-        try (BufferedReader supplierReader = new BufferedReader(new InputStreamReader(supplierDataPath.getInputStream()))){
+        try (BufferedReader supplierReader = new BufferedReader(new InputStreamReader(supplierDataPath.getInputStream()))) {
             String line;
             int supplierIndex = 0;
             while ((line = supplierReader.readLine()) != null) {
@@ -90,15 +86,15 @@ public class NewDataLoader {
                     logger.info("New supplier has been added: {}", newSupplier.getName());
                 } catch (IllegalArgumentException e) {
                     logger.error(e.getMessage());
-                } catch (Exception e){
-                    logger.error("Error processing supplier file at line: {} - {}", supplierIndex,line, e);
+                } catch (Exception e) {
+                    logger.error("Error processing supplier file at line: {} - {}", supplierIndex, line, e);
                 }
             }
 
-        } catch (IOException e){
-            logger.error("Error reading the supplier data file",e);
-        } catch (Exception e){
-            logger.error("Error processing supplier data file",e);
+        } catch (IOException e) {
+            logger.error("Error reading the supplier data file", e);
+        } catch (Exception e) {
+            logger.error("Error processing supplier data file", e);
         }
     }
 
@@ -106,7 +102,7 @@ public class NewDataLoader {
         if (!isValidFile(productDataPath)) {
             return;
         }
-        try (BufferedReader productReader = new BufferedReader(new InputStreamReader(productDataPath.getInputStream()))){
+        try (BufferedReader productReader = new BufferedReader(new InputStreamReader(productDataPath.getInputStream()))) {
             String line;
             int productIndex = 0;
             while ((line = productReader.readLine()) != null) {
@@ -136,15 +132,15 @@ public class NewDataLoader {
                     logger.info("New product has been added: {}", newProduct.getName());
                 } catch (IllegalArgumentException e) {
                     logger.error(e.getMessage());
-                } catch (Exception e){
-                    logger.error("Error processing line at index: {} - {}",productIndex,line, e);
+                } catch (Exception e) {
+                    logger.error("Error processing line at index: {} - {}", productIndex, line, e);
                 }
             }
 
-        } catch (IOException e){
-            logger.error("Error reading the product data file",e);
-        } catch (Exception e){
-            logger.error("Error",e);
+        } catch (IOException e) {
+            logger.error("Error reading the product data file", e);
+        } catch (Exception e) {
+            logger.error("Error", e);
         }
     }
 
@@ -174,17 +170,17 @@ public class NewDataLoader {
                 String name = element.getElementsByTagName("name").item(0).getTextContent();
                 int quantity = Integer.parseInt(element.getElementsByTagName("quantity").item(0).getTextContent());
                 Product product = productRepository.findByName(name)
-                        .orElseThrow(() -> new IllegalArgumentException("Product " +  name + " is not found in database"));
+                        .orElseThrow(() -> new IllegalArgumentException("Product " + name + " is not found in database"));
 
                 product.setQuantity(quantity);
                 product.setLastUpdatedDate(LocalDateTime.now());
                 productRepository.save(product);
-                logger.info("Product {} has been updated in database",name);
+                logger.info("Product {} has been updated in database", name);
             }
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             logger.error(e.getMessage());
         } catch (Exception e) {
-            logger.error("Error processing quantity update XML file at {}",productQuantityPath);
+            logger.error("Error processing quantity update XML file at {}", productQuantityPath);
         }
 
     }

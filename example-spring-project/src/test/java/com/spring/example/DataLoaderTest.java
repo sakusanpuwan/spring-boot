@@ -13,11 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
-
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
@@ -30,24 +25,23 @@ import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 import java.io.IOException;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class DataLoaderTest {
 
-	@Mock
+    private final TestLogger testLogger = TestLoggerFactory.getTestLogger(NewDataLoader.class);
+    ListAppender<ILoggingEvent> appender;
+    @Mock
     private SupplierRepository supplierRepository;
-
     @Mock
     private ProductRepository productRepository;
-
     @InjectMocks
     private NewDataLoader newDataLoader;
 
-    private final TestLogger testLogger = TestLoggerFactory.getTestLogger(NewDataLoader.class);
-
-    ListAppender<ILoggingEvent> appender;
-
     @BeforeEach
-    public void setup(){
+    public void setup() {
         // Set up a ListAppender to capture logs
         appender = new ListAppender<>();
         appender.start();
@@ -225,20 +219,20 @@ class DataLoaderTest {
     @Test
     void updateProductQuantity_Success() {
         String mockXml = """
-                        <?xml version="1.0" encoding="UTF-8"?>
-                        <products>
-                            <product>
-                                <name>Widget A</name>
-                                <quantity>50</quantity>
-                            </product>
-                            <product>
-                                <name>Widget B</name>
-                                <quantity>20</quantity>
-                            </product>
-                        </products>
-                        """;
+                <?xml version="1.0" encoding="UTF-8"?>
+                <products>
+                    <product>
+                        <name>Widget A</name>
+                        <quantity>50</quantity>
+                    </product>
+                    <product>
+                        <name>Widget B</name>
+                        <quantity>20</quantity>
+                    </product>
+                </products>
+                """;
 
-        Optional<Product> mockProduct= Optional.of(new Product());
+        Optional<Product> mockProduct = Optional.of(new Product());
 
         Resource mockResource = new ByteArrayResource(mockXml.getBytes());
 
@@ -260,16 +254,16 @@ class DataLoaderTest {
     @Test
     void updateProductQuantity_LogsError_WhenProductIsNotFoundInDatabase() {
         String mockXml = """
-                        <?xml version="1.0" encoding="UTF-8"?>
-                        <products>
-                            <product>
-                                <name>Widget A</name>
-                                <quantity>50</quantity>
-                            </product>
-                        </products>
-                        """;
+                <?xml version="1.0" encoding="UTF-8"?>
+                <products>
+                    <product>
+                        <name>Widget A</name>
+                        <quantity>50</quantity>
+                    </product>
+                </products>
+                """;
 
-        Optional<Product> mockProduct= Optional.empty();
+        Optional<Product> mockProduct = Optional.empty();
 
         Resource mockResource = new ByteArrayResource(mockXml.getBytes());
 

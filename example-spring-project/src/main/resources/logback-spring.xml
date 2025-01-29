@@ -17,12 +17,12 @@
 
     <!-- Root logger configuration -->
     <root level="info">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
 
     <!-- Custom logger for a specific package -->
     <logger name="com.example.myapp" level="debug">
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="CONSOLE"/>
     </logger>
 </configuration>

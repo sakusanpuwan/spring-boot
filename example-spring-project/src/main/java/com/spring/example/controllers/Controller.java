@@ -6,7 +6,6 @@ import com.spring.example.models.Transaction;
 import com.spring.example.repositories.ProductRepository;
 import com.spring.example.repositories.SupplierRepository;
 import com.spring.example.repositories.TransactionRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
