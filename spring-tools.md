@@ -75,3 +75,18 @@ import org.apache.logging.log4j.Logger;
 
 private static final Logger logger = LogManager.getLogger(CLASSNAME.class);
 ```
+## DevTools
+### Auto-restart
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+    <scope>runtime</scope>
+    <optional>true</optional>
+</dependency>
+```
+
+![img.png](img.png)
+![img_1.png](img_1.png)
+
+DevTools will be disabled automatically when running application as a packaged JAR in production!

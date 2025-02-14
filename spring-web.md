@@ -175,3 +175,9 @@ Store JSP views in `src/main/resources/META-INF/resources/WEB-INF/jsp` folder
 </html>
 ```
 Use Expression Language (EL) evaluation to extract attributes/values from the model and bind to a view such as `name` and `password`.
+
+## Jackson
+is a popular JSON processing library in Java, widely used in Spring Boot for serializing and deserializing JSON data. Spring Boot includes Jackson by default as part of the `spring-boot-starter-web` dependency.
+
+## Tomcat
+Apache Tomcat is the default embedded servlet container in Spring Boot applications. It handles HTTP requests and responses, acting as a web server.
