@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "bruno-api-client-requests",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
