@@ -224,3 +224,33 @@ public String helloWorld() {
 }
 ``` 
 
+
+## Validations
+```xml
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+```
+
+```java
+    @Size(min = 2, message = "Name should be at least 2 characters")
+    private String name;
+
+    @Past(message = "Birth date should be in the past")
+    private LocalDate birthDate;
+```
+
+Spring Boot throws a `MethodArgumentNotValidException` if the validation fails on a request body in a Spring REST controller and returns a 400 BAD REQUEST.
+
+## Documentation
+```xml
+<dependency>
+	<groupId>org.springdoc</groupId>
+	<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+	<version>2.7.0</version>
+</dependency>
+```
+
+`http://localhost:8080/swagger-ui/index.html`  
+`http://localhost:8080/v3/api-docs`
