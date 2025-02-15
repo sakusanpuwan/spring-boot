@@ -1,0 +1,15 @@
+meta {
+  name: GET person via header
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://localhost:8080/person/header
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-VERSION: 1
+}
