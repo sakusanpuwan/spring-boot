@@ -254,3 +254,42 @@ Spring Boot throws a `MethodArgumentNotValidException` if the validation fails o
 
 `http://localhost:8080/swagger-ui/index.html`  
 `http://localhost:8080/v3/api-docs`
+
+## HATEOAS
+Hypermedia as the Engine of Application State is a principle that enhances REST APIs by including hyperlinks in responses, allowing clients to dynamically discover other available actions.
+```xml
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+```
+```java
+    @GetMapping(path = "/users")
+    public List<User> findAllUsers() {
+        return userDaoService.findAll();
+    }
+
+    @GetMapping(path = "/users/{id}")
+    public EntityModel<User> findById(@PathVariable Integer id){
+        User user = userDaoService.findById(id);
+
+        EntityModel<User> entityModel = EntityModel.of(user);
+
+        WebMvcLinkBuilder linkBuilder = linkTo(methodOn(this.getClass()).findAllUsers());
+        entityModel.add(linkBuilder.withRel("all-users"));
+
+        return entityModel;
+    }
+```
+```json
+{
+  "id": 2,
+  "name": "Jim",
+  "birthDate": "1999-02-16",
+  "_links": {
+    "all-users": {
+      "href": "http://localhost:8080/users"
+    }
+  }
+}
+```
