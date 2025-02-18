@@ -90,3 +90,16 @@ private static final Logger logger = LogManager.getLogger(CLASSNAME.class);
 ![img_1.png](img_1.png)
 
 DevTools will be disabled automatically when running application as a packaged JAR in production!
+
+## Spring Boot Actuator
+Provides production-ready features to the application.  
+Helps by exposing endpoints that:
+* Monitor application
+* Provide metrics
+* Understand traffic and health
+
+```properties
+management.endpoints.web.exposure.include=*
+```
+
+`http://localhost:8080/actuator`

@@ -257,6 +257,7 @@ Spring Boot throws a `MethodArgumentNotValidException` if the validation fails o
 
 ## HATEOAS
 Hypermedia as the Engine of Application State is a principle that enhances REST APIs by including hyperlinks in responses, allowing clients to dynamically discover other available actions.
+**HAL (Hypertext Application Language)** is a specific hypermedia format that follows HATEOAS principle and provides a standard way to represent resources with links.
 ```xml
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -281,6 +282,7 @@ Hypermedia as the Engine of Application State is a principle that enhances REST 
         return entityModel;
     }
 ```
+HAL format - uses _links for linking
 ```json
 {
   "id": 2,
@@ -293,3 +295,14 @@ Hypermedia as the Engine of Application State is a principle that enhances REST 
   }
 }
 ```
+
+**HAL Explorer**
+It is an Angular based web application that lets you easily explore HAL and HAL-FORMS based HTTP responses.
+```properties
+  <dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-rest-hal-explorer</artifactId>
+  </dependency>
+```
+
+`http://localhost:8080/explorer`
