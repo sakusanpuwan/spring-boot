@@ -81,3 +81,11 @@ create table course
 );
 ```
 
+To add data 
+```roomsql
+// resources/data.sql
+INSERT INTO USER_DETAILS (id, BIRTH_DATE, "USER_NAME")
+VALUES (1, '2000-01-01', 'John Doe');
+```
+
+**Don't forget to terminate SQL statement by semicolon ;** otherwise it will be treated as a combined single SQL statement
