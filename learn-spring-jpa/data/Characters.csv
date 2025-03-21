@@ -1,4 +1,4 @@
-id,film_id,film,character_id,Characters,Actor,phase_id
+ID,MOVIE_ID,MOVIE,CHARACTER_ID,CHARACTER,ACTOR,PHASE_ID
 1,1,Iron Man,1,Tony Stark/Iron Man,"Robert Downey ,Jr.",1
 2,1,Iron Man,2,Rhodey,Terrence Howard,1
 3,1,Iron Man,3,Obadiah Stane,Jeff Bridges,1
@@ -244,14 +244,14 @@ id,film_id,film,character_id,Characters,Actor,phase_id
 243,35,Captain America: Brave New World,243,Sidewinder,Giancarlo Esposito,5
 244,35,Captain America: Brave New World,244,Samuel Sterns / Leader,Tim Blake Nelson,5
 245,35,Captain America: Brave New World,245,President Thaddeus “Thunderbolt” Ross,Harrison Ford,5
-246,36,Thunderbolts,178,Yelena Belova,Florence Pugh,5
-247,36,Thunderbolts,18,Bucky Barnes,Sebastian Stan,5
-248,36,Thunderbolts,180,Alexei Shostakov,David Harbour,5
-249,36,Thunderbolts,249,Antonia Dreykov,Olga Kurylenko,5
-250,36,Thunderbolts,250,John Walker,Wyatt Russell,5
-251,36,Thunderbolts,128,Ava Starr,Hannah John-Kamen,5
-252,36,Thunderbolts,252,Bob,Lewis James Pullman,5
-253,37,The Fantastic Four: First Steps,253,Reed Richards/Mister Fantastic,Pedro Pascal,6
-254,37,The Fantastic Four: First Steps,254,Sue Storm/Invisible Woman,Vanessa Kirby,6
-255,37,The Fantastic Four: First Steps,255,Johnny Storm/Human Torch,Joseph Quinn,6
-256,37,The Fantastic Four: First Steps,256,Ben Grimm/The Thing,Ebon Moss-Bachrach,6
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
