@@ -1,5 +1,6 @@
 package com.in28minutes.springboot.learn_jpa_and_hibernate.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -57,16 +58,13 @@ public class Movie {
     private BoxOffice boxOffice;
 
     // Defines many-to-many relationship. Many movies can have many characters
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinTable(
-//            name = "MOVIE_CHARACTER", // Name of the join table
-//            joinColumns = @JoinColumn(name = "MOVIE_ID"), // Foreign key in join table referencing the owner entity MOVIE
-//            inverseJoinColumns = @JoinColumn(name = "CHARACTER_ID") // Foreign key in join table referencing the inverse entity CHARACTER
-//    )
-//    @JsonManagedReference
-//    private List<Character> characters;
-
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "MOVIES_CHARACTERS", // Name of the join table
+            joinColumns = @JoinColumn(name = "MOVIE_ID"), // Foreign key in join table referencing the owner entity MOVIE
+            inverseJoinColumns = @JoinColumn(name = "CHARACTER_ID") // Foreign key in join table referencing the inverse entity CHARACTER
+    )
+    @JsonManagedReference
     private List<Character> characters;
 
 }
