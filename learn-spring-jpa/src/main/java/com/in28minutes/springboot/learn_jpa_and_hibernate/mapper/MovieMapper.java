@@ -23,7 +23,11 @@ public interface MovieMapper {
 
     default List<CharacterDTO> mapCharacters(Movie movie) {
         return movie.getCharacters().stream()
-                .map(character -> new CharacterDTO(character.getName(),character.getActor())) // Map only the name
-                .collect(Collectors.toList());
+                .map(character -> CharacterDTO.builder()
+                        .name(character.getName())
+                        .actor(character.getActor())
+                        .build()
+                ) // Map only the name + actor
+                .toList();
     }
 }

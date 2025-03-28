@@ -1,15 +1,19 @@
 package com.in28minutes.springboot.learn_jpa_and_hibernate.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.in28minutes.springboot.learn_jpa_and_hibernate.model.Movie;
+import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@JsonInclude(content = JsonInclude.Include.NON_NULL, value = JsonInclude.Include.NON_EMPTY)
 public class CharacterDTO {
     private String name;
     private String actor;
+    private List<MovieDTO> movies;
 }
