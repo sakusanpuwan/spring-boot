@@ -1,11 +1,9 @@
 package com.in28minutes.springboot.learn_jpa_and_hibernate.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -67,5 +65,8 @@ public class Movie {
 //    )
 //    @JsonManagedReference
 //    private List<Character> characters;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Character> characters;
 
 }
