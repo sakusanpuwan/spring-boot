@@ -9,7 +9,8 @@ import org.mapstruct.Mappings;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = CharacterMapper.class) // Adds CharacterMapper to the mapper
+@Mapper(componentModel = "spring", uses = {CharacterMapper.class, BoxOfficeMapper.class, PublicResponseMapper.class})
+// Adds CharacterMapper to the mapper
 public interface MovieMapper {
 
     // MapStruct annotation generates Spring bean for this mapper
@@ -17,8 +18,22 @@ public interface MovieMapper {
             @Mapping(source = "phase.name", target = "phaseName"), // Maps name field of Phase to phaseName field of MovieDTO
             @Mapping(expression = "java(movie.getStatus().toUpperCase())", target = "status"), // Maps status field of Movie to status field of MovieDTO in uppercase
             @Mapping(source = "boxOffice.worldwideBoxOffice", target = "worldWideBoxOffice"), // Maps worldwideBoxOffice field of BoxOffice to worldWideBoxOffice field of MovieDTO
-            @Mapping(expression = "java(mapCharacters(movie))", target = "characters")})
+            @Mapping(expression = "java(mapCharacters(movie))", target = "characters"),
+            @Mapping(source = "publicResponse.tomatoMeter", target = "tomatoMeter"),
+            @Mapping(source = "publicResponse.audienceScore", target = "audienceScore"),
+            @Mapping(target = "boxOffice", ignore = true),
+            @Mapping(target = "publicResponse", ignore = true)
+    })
     MovieDTO toDTO(Movie movie);
+
+    @Mappings({
+            @Mapping(source = "phase.name", target = "phaseName"), // Maps name field of Phase to phaseName field of MovieDTO
+            @Mapping(expression = "java(movie.getStatus().toUpperCase())", target = "status"), // Maps status field of Movie to status field of MovieDTO in uppercase
+            @Mapping(expression = "java(mapCharacters(movie))", target = "characters"),
+            @Mapping(source = "boxOffice", target = "boxOffice"),
+            @Mapping(source = "publicResponse", target = "publicResponse")
+    })
+    MovieDTO toFullDTO(Movie movie);
 
     default List<CharacterDTO> mapCharacters(Movie movie) {
         return movie.getCharacters().stream()
@@ -29,4 +44,5 @@ public interface MovieMapper {
                 ) // Map only the name + actor
                 .toList();
     }
+
 }

@@ -70,4 +70,7 @@ public class Movie {
     @JsonManagedReference
     private List<Character> characters;
 
+    @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private PublicResponse publicResponse;
+
 }

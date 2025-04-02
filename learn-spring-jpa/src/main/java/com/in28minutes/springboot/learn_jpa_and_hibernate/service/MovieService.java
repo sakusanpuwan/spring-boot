@@ -31,7 +31,7 @@ public class MovieService {
     public MovieDTO getMovieById(Long id) {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException(id));
-        return movieMapper.toDTO(movie);
+        return movieMapper.toFullDTO(movie);
     }
 
     @Transactional(readOnly = true)

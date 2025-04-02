@@ -22,5 +22,9 @@ public class MovieDTO {
     private String status;
     private String phaseName;
     private Long worldWideBoxOffice;
+    private String tomatoMeter;
+    private String audienceScore;
     private List<CharacterDTO> characters;
+    private BoxOfficeDTO boxOffice;
+    private PublicResponseDTO publicResponse;
 }
