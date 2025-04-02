@@ -17,7 +17,8 @@ public class BoxOffice {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MOVIE_ID") // Specifies the foreign key column in BOX_OFFICE table that references the MOVIE_ID column in MOVIES table
+    @JoinColumn(name = "MOVIE_ID")
+    // Specifies the foreign key column in BOX_OFFICE table that references the MOVIE_ID column in MOVIES table
     @MapsId // Tells JPA the primary key of BoxOffice maps to the primary key of Movie
     private Movie movie;
 

@@ -1,7 +1,6 @@
 package com.in28minutes.springboot.learn_jpa_and_hibernate.DTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.in28minutes.springboot.learn_jpa_and_hibernate.model.Movie;
 import lombok.*;
 
 import java.util.List;

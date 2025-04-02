@@ -5,6 +5,7 @@ import com.in28minutes.springboot.learn_jpa_and_hibernate.service.CharacterServi
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +22,14 @@ public class CharacterController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<CharacterDTO>> getAllMovies(){
+    public ResponseEntity<List<CharacterDTO>> getAllCharacters() {
         List<CharacterDTO> characters = characterService.getAllCharacters();
         return new ResponseEntity<>(characters, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CharacterDTO> getCharacterById(@PathVariable Long id) {
+        CharacterDTO characterDTO = characterService.getCharacterById(id);
+        return new ResponseEntity<>(characterDTO, HttpStatus.OK);
     }
 }

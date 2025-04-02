@@ -47,14 +47,17 @@ public class Movie {
     // BoxOffice has the foreign key MOVIE_ID and owns the relationship.
 
     // Defines many-to-one relationship. Many movies can belong to one phase
-    @ManyToOne(fetch = FetchType.LAZY) // Phase entity is lazily loaded. When Movie is fetch, Phase is only loaded when accessed
-    @JoinColumn(name = "PHASE_ID",nullable = false) // Specifies the foreign key column in MOVIES table that references the PHASE_ID column in PHASES table
+    @ManyToOne(fetch = FetchType.LAZY)
+    // Phase entity is lazily loaded. When Movie is fetch, Phase is only loaded when accessed
+    @JoinColumn(name = "PHASE_ID", nullable = false)
+    // Specifies the foreign key column in MOVIES table that references the PHASE_ID column in PHASES table
     private Phase phase;
 
     // Defines one-to-one relationship. One movie can have one box office
     // mappedBy = "movies" in BoxOffice entity, where BoxOffice is the owner of the relationship with the foreign key
     // cascadeType.ALL - if operation is performed on Movie it will be cascaded to associated BoxOffice record
-    @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // mappedBy is used in the entity that is not the owner of the relationship.
+    @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // mappedBy is used in the entity that is not the owner of the relationship.
     private BoxOffice boxOffice;
 
     // Defines many-to-many relationship. Many movies can have many characters

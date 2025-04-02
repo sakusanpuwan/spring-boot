@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = CharacterMapper.class) // Adds CharacterMapper to the mapper
 public interface MovieMapper {
