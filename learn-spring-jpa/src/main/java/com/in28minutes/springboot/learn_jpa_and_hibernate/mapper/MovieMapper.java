@@ -14,9 +14,9 @@ public interface MovieMapper {
 
     // MapStruct annotation generates Spring bean for this mapper
     @Mappings({
-            @Mapping(source = "movie.phase.name", target = "phaseName"), // Maps name field of Phase to phaseName field of MovieDTO
+            @Mapping(source = "phase.name", target = "phaseName"), // Maps name field of Phase to phaseName field of MovieDTO
             @Mapping(expression = "java(movie.getStatus().toUpperCase())", target = "status"), // Maps status field of Movie to status field of MovieDTO in uppercase
-            @Mapping(source = "movie.boxOffice.worldwideBoxOffice", target = "worldWideBoxOffice"), // Maps worldwideBoxOffice field of BoxOffice to worldWideBoxOffice field of MovieDTO
+            @Mapping(source = "boxOffice.worldwideBoxOffice", target = "worldWideBoxOffice"), // Maps worldwideBoxOffice field of BoxOffice to worldWideBoxOffice field of MovieDTO
             @Mapping(expression = "java(mapCharacters(movie))", target = "characters")})
     MovieDTO toDTO(Movie movie);
 

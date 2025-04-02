@@ -6,10 +6,7 @@ import com.in28minutes.springboot.learn_jpa_and_hibernate.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,5 +34,11 @@ public class MovieController {
     public ResponseEntity<MovieDTO> getMovieById(@PathVariable Long id) {
         MovieDTO movieDTO = movieService.getMovieById(id);
         return new ResponseEntity<>(movieDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/search")
+    public ResponseEntity<List<MovieDTO>> getMoviesByKeyword(@RequestParam String keyword) {
+        List<MovieDTO> movies = movieService.getMoviesByKeyword(keyword);
+        return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 }

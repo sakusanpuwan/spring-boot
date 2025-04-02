@@ -29,8 +29,16 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public MovieDTO getMovieById(Long id) {
-        Movie movie = movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException(id));
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new MovieNotFoundException(id));
         return movieMapper.toDTO(movie);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MovieDTO> getMoviesByKeyword(String keyword) {
+        List<Movie> movies = movieRepository.findByTitleContaining(keyword)
+                .orElseThrow(() -> new MovieNotFoundException("Movie with keyword: " + keyword + " not found"));
+        return movies.stream().map(movieMapper::toDTO).toList();
     }
 
 }

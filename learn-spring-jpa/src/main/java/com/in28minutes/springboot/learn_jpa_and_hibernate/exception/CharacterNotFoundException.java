@@ -9,4 +9,8 @@ public class CharacterNotFoundException extends RuntimeException {
         super("Character " + id + " is not found");
     }
 
+    public CharacterNotFoundException(String message) {
+        super(message);
+    }
+
 }
