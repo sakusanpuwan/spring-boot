@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class MovieService {
 
     private final MovieRepository movieRepository;
@@ -21,24 +22,45 @@ public class MovieService {
         this.movieMapper = movieMapper;
     }
 
-    @Transactional(readOnly = true)
     public List<MovieDTO> getAllMovies() {
         List<Movie> movieList = movieRepository.findAll();
         return movieList.stream().map(movieMapper::toDTO).toList();
     }
 
-    @Transactional(readOnly = true)
     public MovieDTO getMovieById(Long id) {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException(id));
         return movieMapper.toFullDTO(movie);
     }
 
-    @Transactional(readOnly = true)
     public List<MovieDTO> getMoviesByKeyword(String keyword) {
         List<Movie> movies = movieRepository.findByTitleContaining(keyword);
         if (movies.isEmpty()) {
-            throw new MovieNotFoundException("Movie with keyword: " + keyword + " not found");
+            throw new MovieNotFoundException("Movies with keyword: " + keyword + " not found");
+        }
+        return movies.stream().map(movieMapper::toDTO).toList();
+    }
+
+    public List<MovieDTO> getMoviesByPhase(Long phaseId) {
+        List<Movie> movies = movieRepository.findByPhase(phaseId);
+        if (movies.isEmpty()) {
+            throw new MovieNotFoundException("Movies with phaseId: " + phaseId + " not found");
+        }
+        return movies.stream().map(movieMapper::toDTO).toList();
+    }
+
+    public List<MovieDTO> getMoviesByBoxOfficeBetween(Long min, Long max) {
+        List<Movie> movies = movieRepository.findByBoxOfficeBetween(min, max);
+        if (movies.isEmpty()) {
+            throw new MovieNotFoundException("Movies with boxOffice between " + min + " and " + max + " not found");
+        }
+        return movies.stream().map(movieMapper::toDTO).toList();
+    }
+
+    public List<MovieDTO> getMoviesByBoxOfficeGreaterThan(Long min) {
+        List<Movie> movies = movieRepository.findByBoxOfficeGreaterThan(min);
+        if (movies.isEmpty()) {
+            throw new MovieNotFoundException("Movies with boxOffice greater than " + min + " not found");
         }
         return movies.stream().map(movieMapper::toDTO).toList();
     }

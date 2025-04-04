@@ -41,4 +41,23 @@ public class MovieController {
         List<MovieDTO> movies = movieService.getMoviesByKeyword(keyword);
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
+
+    @GetMapping(path = "/phase/{phaseId}")
+    public ResponseEntity<List<MovieDTO>> getMoviesByPhase(@PathVariable Long phaseId) {
+        List<MovieDTO> movies = movieService.getMoviesByPhase(phaseId);
+        return new ResponseEntity<>(movies, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/boxOffice-range")
+    public ResponseEntity<List<MovieDTO>> getMoviesByBoxOfficeBetween(@RequestParam(defaultValue = "0") Long min, @RequestParam(required = false) Long max) {
+        List<MovieDTO> movies;
+        if (max == null && min != null) {
+            movies = movieService.getMoviesByBoxOfficeGreaterThan(min);
+        } else if (max != null && min != null) {
+            movies = movieService.getMoviesByBoxOfficeBetween(min, max);
+        } else {
+            movies = movieService.getAllMovies();
+        }
+        return new ResponseEntity<>(movies, HttpStatus.OK);
+    }
 }

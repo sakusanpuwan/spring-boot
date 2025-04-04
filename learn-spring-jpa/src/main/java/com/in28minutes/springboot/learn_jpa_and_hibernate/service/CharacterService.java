@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class CharacterService {
 
     private final CharacterRepository characterRepository;
@@ -21,7 +22,6 @@ public class CharacterService {
         this.characterMapper = characterMapper;
     }
 
-    @Transactional(readOnly = true)
     public List<CharacterDTO> getAllCharacters() {
         List<Character> characters = characterRepository.findAll();
         return characters.stream()
@@ -29,20 +29,63 @@ public class CharacterService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
     public CharacterDTO getCharacterById(Long id) {
         Character character = characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException(id));
         return characterMapper.toDTO(character);
     }
 
-    @Transactional(readOnly = true)
     public List<CharacterDTO> getCharactersByKeyword(String keyword) {
         List<Character> characters = characterRepository.findByNameContaining(keyword);
-        if (characters.isEmpty()){
+        if (characters.isEmpty()) {
             throw new CharacterNotFoundException("Character with keyword: " + keyword + " not found");
         }
         return characters.stream().map(characterMapper::toDTO).toList();
     }
 
+    // TODO: GET all phases and movies
+    /*
+    {
+  "name": "Phase One",
+  "movies": [
+    {
+      "name": "Iron Man",
+      "releaseDate": "2008-05-02"
+    },
+    {
+      "name": "The Incredible Hulk",
+      "releaseDate": "2008-06-13"
+    }
+    // ... more movies in Phase One
+  ]
+}
+     */
+
+    // TODO: Get public response for movie
+    /*
+    {
+  "movieName": "Iron Man",
+  "tomatoMeter": "94",
+  "audienceScore": "91",
+  "metaCritical": "79",
+  "cinemaScore": "A",
+  "domesticRanking": "49",
+  "worldWideRanking": "32"
+}
+     */
+
+    // TODO: Get movies released in year
+/*
+[
+  {
+    "name": "Iron Man",
+    "releaseDate": "2008-05-02"
+  },
+  {
+    "name": "The Incredible Hulk",
+    "releaseDate": "2008-06-13"
+  }
+  // ... more movies from 2008
+]
+ */
 
 }
