@@ -37,8 +37,10 @@ public class CharacterService {
 
     @Transactional(readOnly = true)
     public List<CharacterDTO> getCharactersByKeyword(String keyword) {
-        List<Character> characters = characterRepository.findByNameContaining(keyword)
-                .orElseThrow(() -> new CharacterNotFoundException("Character with keyword: " + keyword + " not found"));
+        List<Character> characters = characterRepository.findByNameContaining(keyword);
+        if (characters.isEmpty()){
+            throw new CharacterNotFoundException("Character with keyword: " + keyword + " not found");
+        }
         return characters.stream().map(characterMapper::toDTO).toList();
     }
 

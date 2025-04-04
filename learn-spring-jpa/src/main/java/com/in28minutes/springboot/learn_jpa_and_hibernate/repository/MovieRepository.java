@@ -14,5 +14,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     // SELECT * FROM movies WHERE LOWER(MOVIE_NAME) LIKE LOWER('%keyword%');
     @Query("SELECT m FROM Movie m WHERE LOWER(m.name) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-    Optional<List<Movie>> findByTitleContaining(@Param("keyword") String keyword);
+    List<Movie> findByTitleContaining(@Param("keyword") String keyword);
 }

@@ -13,5 +13,5 @@ import java.util.Optional;
 public interface CharacterRepository extends JpaRepository<Character, Long> {
     // SELECT * FROM movies WHERE LOWER(CHARACTER_NAME) LIKE LOWER('%keyword%');
     @Query("SELECT c FROM Character c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-    Optional<List<Character>> findByNameContaining(@Param("keyword") String keyword);
+    List<Character> findByNameContaining(@Param("keyword") String keyword);
 }
