@@ -1,7 +1,7 @@
 package com.in28minutes.springboot.learn_jpa_and_hibernate.service;
 
 import com.in28minutes.springboot.learn_jpa_and_hibernate.DTO.MovieDTO;
-import com.in28minutes.springboot.learn_jpa_and_hibernate.exception.MovieNotFoundException;
+import com.in28minutes.springboot.learn_jpa_and_hibernate.exception.EntityNotFoundException;
 import com.in28minutes.springboot.learn_jpa_and_hibernate.mapper.MovieMapper;
 import com.in28minutes.springboot.learn_jpa_and_hibernate.model.Movie;
 import com.in28minutes.springboot.learn_jpa_and_hibernate.repository.MovieRepository;
@@ -29,14 +29,14 @@ public class MovieService {
 
     public MovieDTO getMovieById(Long id) {
         Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new MovieNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException("Movie " + id + " is not found"));
         return movieMapper.toFullDTO(movie);
     }
 
     public List<MovieDTO> getMoviesByKeyword(String keyword) {
         List<Movie> movies = movieRepository.findByTitleContaining(keyword);
         if (movies.isEmpty()) {
-            throw new MovieNotFoundException("Movies with keyword: " + keyword + " not found");
+            throw new EntityNotFoundException("Movies with keyword: " + keyword + " not found");
         }
         return movies.stream().map(movieMapper::toDTO).toList();
     }
@@ -44,7 +44,7 @@ public class MovieService {
     public List<MovieDTO> getMoviesByPhase(Long phaseId) {
         List<Movie> movies = movieRepository.findByPhase(phaseId);
         if (movies.isEmpty()) {
-            throw new MovieNotFoundException("Movies with phaseId: " + phaseId + " not found");
+            throw new EntityNotFoundException("Movies with phaseId: " + phaseId + " not found");
         }
         return movies.stream().map(movieMapper::toDTO).toList();
     }
@@ -52,7 +52,7 @@ public class MovieService {
     public List<MovieDTO> getMoviesByBoxOfficeBetween(Long min, Long max) {
         List<Movie> movies = movieRepository.findByBoxOfficeBetween(min, max);
         if (movies.isEmpty()) {
-            throw new MovieNotFoundException("Movies with boxOffice between " + min + " and " + max + " not found");
+            throw new EntityNotFoundException("Movies with boxOffice between " + min + " and " + max + " not found");
         }
         return movies.stream().map(movieMapper::toDTO).toList();
     }
@@ -60,7 +60,7 @@ public class MovieService {
     public List<MovieDTO> getMoviesByBoxOfficeGreaterThan(Long min) {
         List<Movie> movies = movieRepository.findByBoxOfficeGreaterThan(min);
         if (movies.isEmpty()) {
-            throw new MovieNotFoundException("Movies with boxOffice greater than " + min + " not found");
+            throw new EntityNotFoundException("Movies with boxOffice greater than " + min + " not found");
         }
         return movies.stream().map(movieMapper::toDTO).toList();
     }

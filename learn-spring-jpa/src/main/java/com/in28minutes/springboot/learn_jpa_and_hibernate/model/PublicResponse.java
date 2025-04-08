@@ -1,7 +1,10 @@
 package com.in28minutes.springboot.learn_jpa_and_hibernate.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "PUBLIC_RESPONSE")
@@ -9,7 +12,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class PublicResponse {
 
     @Id

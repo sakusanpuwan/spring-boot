@@ -1,7 +1,7 @@
 package com.in28minutes.springboot.learn_jpa_and_hibernate.service;
 
 import com.in28minutes.springboot.learn_jpa_and_hibernate.DTO.CharacterDTO;
-import com.in28minutes.springboot.learn_jpa_and_hibernate.exception.CharacterNotFoundException;
+import com.in28minutes.springboot.learn_jpa_and_hibernate.exception.EntityNotFoundException;
 import com.in28minutes.springboot.learn_jpa_and_hibernate.mapper.CharacterMapper;
 import com.in28minutes.springboot.learn_jpa_and_hibernate.model.Character;
 import com.in28minutes.springboot.learn_jpa_and_hibernate.repository.CharacterRepository;
@@ -30,14 +30,14 @@ public class CharacterService {
     }
 
     public CharacterDTO getCharacterById(Long id) {
-        Character character = characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException(id));
+        Character character = characterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Character " + id + " is not found"));
         return characterMapper.toDTO(character);
     }
 
     public List<CharacterDTO> getCharactersByKeyword(String keyword) {
         List<Character> characters = characterRepository.findByNameContaining(keyword);
         if (characters.isEmpty()) {
-            throw new CharacterNotFoundException("Character with keyword: " + keyword + " not found");
+            throw new EntityNotFoundException("Character with keyword: " + keyword + " not found");
         }
         return characters.stream().map(characterMapper::toDTO).toList();
     }
@@ -87,5 +87,6 @@ public class CharacterService {
   // ... more movies from 2008
 ]
  */
+    // TODO: Get all characters of a movie characters/by-movie/{movieName}
 
 }
