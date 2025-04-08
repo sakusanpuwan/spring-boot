@@ -1,0 +1,15 @@
+meta {
+  name: GET movies by year
+  type: http
+  seq: 9
+}
+
+get {
+  url: http://localhost:8080/movies/year?year=2019
+  body: none
+  auth: inherit
+}
+
+params:query {
+  year: 2019
+}

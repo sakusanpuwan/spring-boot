@@ -1,0 +1,16 @@
+meta {
+  name: GET movies by box office between
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://localhost:8080/movies/boxOffice-range?min=850482778&max=1132532832
+  body: none
+  auth: none
+}
+
+params:query {
+  min: 850482778
+  max: 1132532832
+}
