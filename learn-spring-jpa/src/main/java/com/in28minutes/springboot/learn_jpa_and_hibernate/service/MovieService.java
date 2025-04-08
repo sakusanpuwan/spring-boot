@@ -5,6 +5,7 @@ import com.in28minutes.springboot.learn_jpa_and_hibernate.exception.EntityNotFou
 import com.in28minutes.springboot.learn_jpa_and_hibernate.mapper.MovieMapper;
 import com.in28minutes.springboot.learn_jpa_and_hibernate.model.Movie;
 import com.in28minutes.springboot.learn_jpa_and_hibernate.repository.MovieRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,6 +71,25 @@ public class MovieService {
         if (movies.isEmpty()) {
             throw new EntityNotFoundException("Movies from year " + year + " not found");
         }
+        return movies.stream().map(movieMapper::toDTO).toList();
+    }
+
+    // Method for combined filtering
+    public List<MovieDTO> getMoviesByCombinedFiltering(Integer year, String keyword, Long minBoxOffice, Long maxBoxOffice, Long phaseId) {
+
+        // Build the specification by combining individual criteria using 'and'
+        Specification<Movie> spec = Specification
+                .where(MovieSpecification.releasedInYear(year)) // Start with where()
+                .and(MovieSpecification.hasKeyword(keyword)) // If null then criteriaBuilder.conjunction() returns a Predicate representing TRUE, skipping filtering
+                .and(MovieSpecification.hasBoxOfficeBetween(minBoxOffice, maxBoxOffice))
+                .and(MovieSpecification.belongsToPhase(phaseId));
+
+        List<Movie> movies = movieRepository.findAll(spec); // Execute the specification
+
+         if (movies.isEmpty()) {
+             throw new EntityNotFoundException("No movies found matching the criteria.");
+         }
+
         return movies.stream().map(movieMapper::toDTO).toList();
     }
 

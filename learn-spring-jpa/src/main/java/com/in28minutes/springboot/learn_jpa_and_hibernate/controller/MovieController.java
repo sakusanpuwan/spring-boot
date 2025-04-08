@@ -16,10 +16,6 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    @Autowired
-    private MovieRepository movieRepository;
-
-
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
@@ -64,6 +60,20 @@ public class MovieController {
     @GetMapping(path = "/year")
     public ResponseEntity<List<MovieDTO>> getMoviesByYear(@RequestParam int year) {
         List<MovieDTO> movies = movieService.getMoviesByYear(year);
+        return new ResponseEntity<>(movies, HttpStatus.OK);
+    }
+
+    // Single endpoint for getting movies (all or filtered)
+    @GetMapping("/filter")
+    public ResponseEntity<List<MovieDTO>> getMovies(
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Long minBoxOffice,
+            @RequestParam(required = false) Long maxBoxOffice,
+            @RequestParam(required = false) Long phaseId
+    ) {
+        // Call the single service method with all potential filters
+        List<MovieDTO> movies = movieService.getMoviesByCombinedFiltering(year, keyword, minBoxOffice, maxBoxOffice, phaseId);
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 

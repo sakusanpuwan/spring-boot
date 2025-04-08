@@ -1,0 +1,16 @@
+meta {
+  name: GET movies by multiple filter
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://localhost:8080/movies/filter?year=2017&keyword=spider
+  body: none
+  auth: inherit
+}
+
+params:query {
+  year: 2017
+  keyword: spider
+}
