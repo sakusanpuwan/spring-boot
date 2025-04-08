@@ -60,4 +60,11 @@ public class MovieController {
         }
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
+
+    @GetMapping(path = "/year")
+    public ResponseEntity<List<MovieDTO>> getMoviesByYear(@RequestParam int year) {
+        List<MovieDTO> movies = movieService.getMoviesByYear(year);
+        return new ResponseEntity<>(movies, HttpStatus.OK);
+    }
+
 }

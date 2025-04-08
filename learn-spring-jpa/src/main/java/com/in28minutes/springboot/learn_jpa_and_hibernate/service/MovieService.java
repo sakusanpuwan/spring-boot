@@ -65,4 +65,12 @@ public class MovieService {
         return movies.stream().map(movieMapper::toDTO).toList();
     }
 
+    public List<MovieDTO> getMoviesByYear(int year) {
+        List<Movie> movies = movieRepository.findMoviesByYear(year);
+        if (movies.isEmpty()) {
+            throw new EntityNotFoundException("Movies from year " + year + " not found");
+        }
+        return movies.stream().map(movieMapper::toDTO).toList();
+    }
+
 }

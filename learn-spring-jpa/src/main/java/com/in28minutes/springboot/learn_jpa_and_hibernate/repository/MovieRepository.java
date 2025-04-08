@@ -24,4 +24,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query("SELECT m from Movie m WHERE m.boxOffice.worldwideBoxOffice >= :min")
     List<Movie> findByBoxOfficeGreaterThan(@Param("min") Long minBoxOfficeValue);
 
+    @Query("SELECT m from Movie m WHERE YEAR(m.releaseDate) = :year")
+    List<Movie> findMoviesByYear(@Param("year") int year);
+
 }
