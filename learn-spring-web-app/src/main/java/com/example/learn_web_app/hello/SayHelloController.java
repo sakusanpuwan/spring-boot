@@ -3,8 +3,10 @@ package com.example.learn_web_app.hello;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
+@SessionAttributes("name")
 public class SayHelloController {
 
     @RequestMapping("say-hello")

@@ -181,3 +181,9 @@ is a popular JSON processing library in Java, widely used in Spring Boot for ser
 
 ## Tomcat
 Apache Tomcat is the default embedded servlet container in Spring Boot applications. It handles HTTP requests and responses, acting as a web server.
+
+## Session vs Request scope
+Request scope are only active for a single request and cannot be used for further requests.  
+Session scope stores details across multiple requests
+
+`@SessionAttributes("name")` - stores name attribute in session to be reused
