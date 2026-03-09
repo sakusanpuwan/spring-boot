@@ -86,8 +86,8 @@ private static final Logger logger = LogManager.getLogger(CLASSNAME.class);
 </dependency>
 ```
 
-![img.png](img.png)
-![img_1.png](img_1.png)
+![img.png](assets/img.png)
+![img_1.png](assets/img_1.png)
 
 DevTools will be disabled automatically when running application as a packaged JAR in production!
 
